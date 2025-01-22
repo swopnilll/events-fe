@@ -29,7 +29,11 @@ const Navbar = () => {
       <header className="fixed w-full px-8 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white">
         <nav className="flex justify-between items-center w-full">
           <NavLink to="/" className="font-bold">
-          <img src="/images/Logo2.svg" alt="Elegant Event Logo" className="h-10" />
+            <img
+              src="/images/Logo2.svg"
+              alt="Elegant Event Logo"
+              className="h-20"
+            />
           </NavLink>
           <ul
             className={cn(
