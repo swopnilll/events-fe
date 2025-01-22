@@ -8,8 +8,8 @@ const mockEventData = {
 	title: "Coldplay Concert", // Event Title
 	date: "Saturday, 2 December 2023", // Event Date
 	time: "6:30 PM", // Event Time
-	isPriced: true, // Whether the event has a ticket price
-	price: 500, // Price of the ticket (in USD)
+	isPriced: false, // Whether the event has a ticket price
+	price: 0, // Price of the ticket (in USD)
 	location: "100/97 Opera House, Sydney, NSW", // Event Location
 	description: `
 	  Get ready to kick off the Christmas season in Mumbai with SOUND OF 
@@ -89,10 +89,15 @@ const EventDetails = () => {
 
 						{/* Buy Ticket and Ticket Information */}
 						<div className="flex flex-col gap-4">
-							{eventData.isPriced && (
+							{eventData.isPriced ? (
 								<button className="w-fit flex items-center gap-2 bg-[#ffe047d8] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#FFE047] transition">
 									<Ticket className="w-5 h-5 text-black" />
 									<span>Buy Tickets</span>
+								</button>
+							) : (
+								<button className="w-fit flex items-center gap-2 bg-[#ffe047d8] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#FFE047] transition">
+									<Ticket className="w-5 h-5 text-black" />
+									<span>Register For Free</span>
 								</button>
 							)}
 
