@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="fixed w-full px-8 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white">
+      <header className="fixed w-full px-8 pb-0 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white">
         <nav className="flex justify-between items-center w-full">
           <NavLink to="/" className="font-bold">
             <img
@@ -37,7 +37,7 @@ const Navbar = () => {
           </NavLink>
           <ul
             className={cn(
-              "flex items-center gap-8",
+              "flex items-end gap-8",
               isMenuOpen &&
                 "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 bottom-0 w-1/2 p-8 transform transition-transform duration-300 ease-in-out translate-x-0",
               !isMenuOpen &&
@@ -47,10 +47,17 @@ const Navbar = () => {
           >
             {navLinks.map((link) => {
               return (
-                <li key={link.name}>
+                <li key={link.name} className="relative">
                   <NavLink
                     to={link.path}
-                    className="text-white"
+                    className={({ isActive }) =>
+                      cn(
+                        "text-white px-4 py-4 border-b-4 transition-all duration-300",
+                        isActive
+                          ? "border-yellow-400"
+                          : "border-transparent"
+                      )
+                    }
                     onClick={closeMenuOnMobile}
                   >
                     {link.name}
