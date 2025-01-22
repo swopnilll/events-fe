@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="fixed w-full px-8 pb-0 pl-0 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white">
+      <header className="fixed w-full px-8 pb-0 pl-0 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white z-50">
         <nav className="flex justify-between items-center w-full">
           <NavLink to="/" className="font-bold">
             <img
