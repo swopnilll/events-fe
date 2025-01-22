@@ -5,8 +5,10 @@ import "./AuthLayout.css";
 const AuthLayout = () => {
   return (
     <>
-      <div className="outlet-wrap-auth-layout">
-        <Outlet></Outlet>
+      <div className="outlet-wrap-auth-layout flex flex-col min-h-screen">
+        <main className="flex-grow pt-[--navbar-height]">
+          <Outlet />
+        </main>
       </div>
     </>
   );

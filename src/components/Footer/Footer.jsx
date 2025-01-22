@@ -3,7 +3,7 @@ import { footerLinks } from "../../config/ui/footerLinksConfig";
 const Footer = () => {
   return (
     <>
-      <footer className="fixed bottom-0 w-full px-8 md:px-20 lg:px-40 py-6 md:py-8 lg:py-10 shadow-sm shadow-neutral-500 bg-[#2B293D] text-white">
+      <footer className="bottom-0 w-full px-8 md:px-20 lg:px-40 py-6 md:py-8 lg:py-10 shadow-sm shadow-neutral-500 bg-[#2B293D] text-white">
         <div className="flex flex-wrap justify-center md:justify-between gap-x-10 gap-y-6">
           {footerLinks.map((section) => (
             <div

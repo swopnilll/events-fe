@@ -16,6 +16,13 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    if (!isMenuOpen) {
+      document.body.classList.add("overflow-hidden");
+      console.log("isMenuOpen: ", isMenuOpen);
+    } else {
+      document.body.classList.remove("overflow-hidden");
+      console.log("isMenuOpen: ", isMenuOpen);
+    }
   };
 
   const closeMenuOnMobile = () => {
@@ -35,14 +42,20 @@ const Navbar = () => {
               className="h-20"
             />
           </NavLink>
+          <div
+            className={`fixed inset-0 bg-black transition-opacity duration-300 ${
+              isMenuOpen ? "opacity-50" : "opacity-0 pointer-events-none"
+            }`}
+            onClick={toggleMenu}
+          />
           <ul
             className={cn(
-              "flex items-end gap-8 h-screen z-50",
+              "flex items-end gap-8 z-50",
               isMenuOpen &&
-                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-1/2 p-8 transform transition-transform duration-300 ease-in-out translate-x-0",
+                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-200 p-8 h-full overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-0",
               !isMenuOpen &&
                 isMobile &&
-                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-1/2 p-8 transform transition-transform duration-300 ease-in-out translate-x-full"
+                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-200 p-8 h-full overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-full"
             )}
           >
             {navLinks.map((link) => {
