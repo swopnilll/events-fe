@@ -37,12 +37,12 @@ const Navbar = () => {
           </NavLink>
           <ul
             className={cn(
-              "flex items-end gap-8",
+              "flex items-end gap-8 h-screen z-50",
               isMenuOpen &&
-                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 bottom-0 w-1/2 p-8 transform transition-transform duration-300 ease-in-out translate-x-0",
+                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-1/2 p-8 transform transition-transform duration-300 ease-in-out translate-x-0",
               !isMenuOpen &&
                 isMobile &&
-                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 bottom-0 w-1/2 p-8 transform transition-transform duration-300 ease-in-out translate-x-full"
+                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-1/2 p-8 transform transition-transform duration-300 ease-in-out translate-x-full"
             )}
           >
             {navLinks.map((link) => {
@@ -53,9 +53,7 @@ const Navbar = () => {
                     className={({ isActive }) =>
                       cn(
                         "text-white px-4 py-4 border-b-4 transition-all duration-300",
-                        isActive
-                          ? "border-yellow-400"
-                          : "border-transparent"
+                        isActive ? "border-yellow-400" : "border-transparent"
                       )
                     }
                     onClick={closeMenuOnMobile}
