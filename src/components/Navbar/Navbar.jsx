@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="fixed w-full px-8 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white">
+      <header className="z-50 fixed w-full px-8 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white">
         <nav className="flex justify-between items-center w-full">
           <NavLink to="/" className="font-bold">
             CompanyLogo
