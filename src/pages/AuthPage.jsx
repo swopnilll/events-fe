@@ -78,7 +78,11 @@ const AuthPage = () => {
       <div className="w-screen h-screen flex flex-col lg:flex-row">
         {/* Graphics Section */}
         <div className="hidden bg-[#2B293D] lg:block lg:w-2/4 p-6 text-white text-3xl">
-          <div>Elegant Events</div>
+          <img
+            src="/images/Logo2.svg"
+            alt="Elegant Event Logo"
+            className="max-h-full w-auto"
+          />
 
           <div className="text-white text-3xl font-bold flex pt-32">
             <div>
