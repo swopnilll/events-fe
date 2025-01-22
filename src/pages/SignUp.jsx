@@ -7,8 +7,9 @@ import { XIcon } from "lucide-react";
 
 import InputField from "../components/InputField/InputField";
 
-const AuthPage = ({  }) => {
+const SignUp = ({}) => {
 	const [formData, setFormData] = useState({
+		fullName: "",
 		email: "",
 		password: "",
 	});
@@ -49,6 +50,12 @@ const AuthPage = ({  }) => {
 			newErrors.password = "Password must be at least 6 characters.";
 		}
 
+		if (!formData.fullName) {
+			newErrors.fullName = "Full name is required.";
+		} else if (formData.fullName.trim().split(" ").length < 2) {
+			newErrors.fullName = "Please enter your full name (first and last name).";
+		}
+
 		return newErrors;
 	};
 
@@ -64,7 +71,7 @@ const AuthPage = ({  }) => {
 		}
 
 		// Call an API or perform login action
-		console.log("Login successful", formData);
+		console.log("Register successful", formData);
 
 		setErrors({});
 	};
@@ -87,13 +94,22 @@ const AuthPage = ({  }) => {
 				{/* Login Form */}
 				<div className="p-6 bg-white h-full shadow-lg lg:w-3/4 flex flex-col items-center justify-around">
 					<h1 className="text-2xl font-semibold text-gray-800 mb-6 text-left w-3/4">
-						Login
+						Create Account
 					</h1>
 
 					<form
 						onSubmit={handleSubmit}
 						className="h-3/4 w-3/4 flex flex-col"
 					>
+						<InputField
+							label="Full Name"
+							name="fullName"
+							value={formData.fullName}
+							onChange={handleChange}
+							placeholder="Enter your full name"
+							error={errors.fullName}
+						/>
+
 						<InputField
 							label="Email"
 							type="email"
@@ -122,10 +138,10 @@ const AuthPage = ({  }) => {
 						</button>
 
 						<div className="text-[#636363ce] text-sm mt-6">
-							<span>Don’t have an account? </span>
+							<span>Already have an account? </span>
 							<span className="cursor-pointer text-[#636363] font-bold">
 								{" "}
-								Sign Up
+								Sign In
 							</span>
 						</div>
 					</form>
@@ -139,8 +155,6 @@ const AuthPage = ({  }) => {
 	);
 };
 
-AuthPage.propTypes = {
-	
-};
+SignUp.propTypes = {};
 
-export default AuthPage;
+export default SignUp;
