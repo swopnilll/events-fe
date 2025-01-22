@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@mantine/hooks": "^7.16.1",
+    "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "lucide-react": "^0.473.0",
     "prop-types": "^15.8.1",
