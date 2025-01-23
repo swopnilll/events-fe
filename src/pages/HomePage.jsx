@@ -2,9 +2,18 @@ import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth
 import SearchInput from "../features/Events/components/SearchInput";
 
 import EventCard from "../features/Events/components/EventCard";
+import Filter from "../features/Events/components/Filter";
 
 const HomePage = () => {
   const { loading, isAuthenticated } = useAuth();
+
+  const applyFilter = (e, filterBy, optionName) => {
+    console.log(
+      `${
+        e.target.checked ? "Applied" : "Removed"
+      }: ${optionName} in ${filterBy}`
+    );
+  };
 
   console.log({ loading, isAuthenticated });
 
@@ -39,6 +48,7 @@ const HomePage = () => {
           </div>
         </div>
 
+<<<<<<< HEAD
         <section className="py-8 px-4 bg-white">
           <div className="max-w-screen-xl mx-auto ">
             {/* Section Title */}
@@ -58,6 +68,28 @@ const HomePage = () => {
                 { name: "Travel & Adventure" },
               ].map((category, index) => (
                 <div
+=======
+        {/* List */}
+        <div className="w-full flex justify-center md:mt-6 px-4">
+          <div className="w-full md:w-3/4 max-w-screen-xl">
+            <div className="w-full bg-white p-4 md:flex md:flex-col space-y-8">
+              {/* Date Filter - tag */}
+              <Filter
+                filterBy="Date"
+                options={[
+                  { name: "All", handler: applyFilter },
+                  { name: "Today", handler: applyFilter },
+                  { name: "Tomorrow", handler: applyFilter },
+                  { name: "This Weekend", handler: applyFilter },
+                  { name: "Free", handler: applyFilter },
+                ]}
+                type="tag"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.map((event, index) => (
+                <EventCard
+>>>>>>> adadfd7 (feat/homepage Modified Filter - Tag option added)
                   key={index}
                   className="flex flex-col items-center text-center space-y-3"
                 >
