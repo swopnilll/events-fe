@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth
 import { XIcon } from "lucide-react";
 
 import InputField from "../components/InputField/InputField";
+import Logo from "../components/logo/Logo";
 
 const AuthPage = () => {
   const { loading, isAuthenticated, login } = useAuth();
@@ -78,13 +79,9 @@ const AuthPage = () => {
       <div className="w-screen h-screen flex flex-col lg:flex-row">
         {/* Graphics Section */}
         <div className="hidden bg-[#2B293D] lg:block lg:w-2/4 p-6 text-white text-3xl">
-          <img
-            src="/images/Logo2.svg"
-            alt="Elegant Event Logo"
-            className="max-h-full w-auto"
-          />
+          <Logo className="h-20" />
 
-          <div className="text-white text-3xl font-bold flex pt-32">
+          <div className="text-white text-3xl font-bold flex py-32">
             <div>
               <p>Discover tailored events.</p>
               <p>Sign in for personalized recommendations today!</p>

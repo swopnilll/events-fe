@@ -9,20 +9,31 @@ const HomePage = () => {
   return (
     <>
       <main>
-        {/* Search Box */}
-        <div className="relative w-full bg-[url('/images/Hero.jpeg')] bg-cover bg-center p-20 pt-30 flex flex-col justify-center items-center">
-          <div className="absolute inset-0 bg-[#353345] opacity-70"></div>
+        <div className="relative w-full md:h-[300px] bg-[#353345] p-6 flex flex-col justify-center items-center">
+          {/* Background Image */}
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: "url('/images/Hero.jpeg')",
+            }}
+          ></div>
 
-          <div className="relative w-full md:w-1/2">
-            <p className="text-lg lg:text-3xl font-bold text-white text-left">
-              Don't miss out!
-              <br /> Explore the{" "}
-              <span className="text-[#FFE047]">vibrant events</span> happening
-              locally and globally.
+          {/* Black Overlay */}
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+
+          {/* Overlay Content */}
+          <div className="relative w-full md:w-1/2 text-left z-10">
+            <p className="text-xl lg:text-3xl text-white">Do not miss out!</p>
+            <p className="text-xl lg:text-3xl text-white">
+              Explore the{" "}
+              <strong className="text-yellow-400">vibrant events</strong>{" "}
+              happening locally and globally.
             </p>
-            <div className="mt-10">
-              <SearchInput />
-            </div>
+          </div>
+
+          {/* Search Input */}
+          <div className="relative w-full md:w-1/2 mt-5 z-10">
+            <SearchInput />
           </div>
         </div>
 
@@ -34,9 +45,7 @@ const HomePage = () => {
           }}
         >
           <div className="text-center">
-            <h4 className="text-lg font-bold">
-              Create an event with Eventify
-            </h4>
+            <h4 className="text-lg font-bold">Create an event with Eventify</h4>
             <p className="text-sm font-light">
               Got a show, event, activity or a great experience? Partner with us
               & get listed on Eventify

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useViewportSize } from "@mantine/hooks";
 import { MenuIcon, XIcon } from "lucide-react";
+import Logo from "../logo/Logo";
 
 import "./NavBar.css";
 import cn from "../../lib/utils";
@@ -36,11 +37,7 @@ const Navbar = () => {
       <header className="fixed w-full px-8 pb-0 pl-0 shadow-sm shadow-neutral-500 h-[--navbar-height] flex items-center bg-[#2B293D] text-white z-50">
         <nav className="flex justify-between items-center w-full">
           <NavLink to="/" className="font-bold">
-            <img
-              src="/images/Logo2.svg"
-              alt="Elegant Event Logo"
-              className="h-20"
-            />
+            <Logo className="h-20" />
           </NavLink>
           <div
             className={`fixed inset-0 bg-black transition-opacity duration-300 ${
