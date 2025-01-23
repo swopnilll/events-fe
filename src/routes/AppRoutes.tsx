@@ -8,6 +8,7 @@ import MainLayout from "../layouts/MainLayout";
 import AuthLayout from "../layouts/AuthLayout";
 
 import EventList from "../features/Events/pages/EventList";
+import EventDetails from "../features/Events/pages/EventDetails";
 import EventCreation from "../features/Events/pages/EventCreation";
 
 const AppRoutes = () => {
@@ -18,6 +19,7 @@ const AppRoutes = () => {
           <Route path="/" element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/events" element={<EventList />} />
+            <Route path="/events/:id" element={<EventDetails />} />
             <Route path="/create-event" element={<EventCreation />} />
           </Route>
 
