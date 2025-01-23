@@ -6,7 +6,7 @@ const AuthLayout = () => {
   return (
     <>
       <div className="outlet-wrap-auth-layout flex flex-col min-h-screen">
-        <main className="flex-grow pt-[--navbar-height]">
+        <main className="flex-grow">
           <Outlet />
         </main>
       </div>

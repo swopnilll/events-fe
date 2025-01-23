@@ -58,31 +58,31 @@ const Navbar = () => {
                 "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-200 p-8 h-full overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-full"
             )}
           >
-            {navLinks.map((link) => {
-              return (
-                <li key={link.name} className="relative">
-                  <NavLink
-                    to={link.path}
-                    className={({ isActive }) =>
-                      cn(
-                        "text-white px-4 py-4 border-b-4 transition-all duration-300",
-                        isActive ? "border-yellow-400" : "border-transparent"
-                      )
-                    }
-                    onClick={closeMenuOnMobile}
-                  >
-                    {link.name}
-                  </NavLink>
-                </li>
-              );
-            })}
+            {navLinks.map((link) => (
+              <li key={link.name} className="relative">
+                <NavLink
+                  to={link.path}
+                  className={({ isActive }) =>
+                    cn(
+                      "text-white px-4 py-4 border-b-4 transition-all duration-300",
+                      isActive ? "border-yellow-400" : "border-transparent"
+                    )
+                  }
+                  onClick={closeMenuOnMobile}
+                >
+                  {link.name}
+                </NavLink>
+              </li>
+            ))}
 
-            <NavLink
-              to={"/create-event"}
-              className="text-black rounded-lg py-2 px-4 bg-[#FFE047]"
-            >
-              Create Events
-            </NavLink>
+            <li>
+              <NavLink
+                to={"/create-event"}
+                className="text-black rounded-lg py-2 px-4 bg-[#FFE047]"
+              >
+                Create Events
+              </NavLink>
+            </li>
           </ul>
 
           <button
