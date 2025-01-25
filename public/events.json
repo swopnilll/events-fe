@@ -1,0 +1,74 @@
+[
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Startup Talks - Innovative event for founders & Startup Enthusiasts of Delhi",
+    "date": "Jan 25, 2025",
+    "location": "Delhi",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "100"
+  },
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Tech Innovators Meetup",
+    "date": "Feb 15, 2025",
+    "location": "Mumbai",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "200"
+  },
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Startup Talks - Innovative event for founders & Startup Enthusiasts of Delhi",
+    "date": "Jan 25, 2025",
+    "location": "Delhi",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "100"
+  },
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Tech Innovators Meetup",
+    "date": "Feb 15, 2025",
+    "location": "Mumbai",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "200"
+  },
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Startup Talks - Innovative event for founders & Startup Enthusiasts of Delhi",
+    "date": "Jan 25, 2025",
+    "location": "Delhi",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "100"
+  },
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Tech Innovators Meetup",
+    "date": "Feb 15, 2025",
+    "location": "Mumbai",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "200"
+  },
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Startup Talks - Innovative event for founders & Startup Enthusiasts of Delhi",
+    "date": "Jan 25, 2025",
+    "location": "Delhi",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "100"
+  },
+  {
+    "image": "/images/events/event1.svg",
+    "title": "Tech Innovators Meetup",
+    "date": "Feb 15, 2025",
+    "location": "Mumbai",
+    "isPriced": true,
+    "time": "4pm to 6pm",
+    "price": "200"
+  }
+]
