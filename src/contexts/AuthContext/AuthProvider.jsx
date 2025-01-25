@@ -1,5 +1,4 @@
-import { useState, useMemo } from "react";
-
+import { useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { AuthContext } from "./AuthContext";
@@ -7,22 +6,34 @@ import { loginApi, logoutApi } from "../../services/apis/auth";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // User object
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error state for login
+  const isAuthenticated = !!user; // Boolean to check if user is logged in
 
-  const [loading, setLoading] = useState(true); // Loading state
-
-  const isAuthenticated = !!user;
+  // Initialize user from localStorage on mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem("authUser");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Restore user from localStorage
+    }
+    setLoading(false); // Done loading
+  }, []);
 
   // Login function
   const login = async (email, password) => {
-    console.log("Login called");
-
     setLoading(true);
-    try {
-      const { userData } = await loginApi(email, password); // Direct API call
+    setError(null); // Clear previous errors
 
-      setUser(userData);
+    try {
+      const { data } = await loginApi(email, password);
+
+      setUser(data?.user);
+
+      localStorage.setItem("authUser", JSON.stringify(data?.user));
+      localStorage.setItem("authToken", data?.token);
     } catch (error) {
       console.error("Login failed:", error);
+      setError("Invalid email or password. Please try again."); // Set error message
     } finally {
       setLoading(false);
     }
@@ -30,8 +41,13 @@ export const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = async () => {
-    await logoutApi(); // Call logout API
-    setUser(null);
+    try {
+      await logoutApi(); // Call logout API
+      setUser(null);
+      localStorage.removeItem("authUser"); // Remove user from localStorage
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   // Memoize context value to prevent unnecessary re-renders
@@ -42,8 +58,9 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated,
       login,
       logout,
+      error,
     }),
-    [user, loading, isAuthenticated]
+    [user, loading, isAuthenticated, error]
   );
 
   AuthProvider.propTypes = {

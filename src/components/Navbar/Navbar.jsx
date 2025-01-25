@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useViewportSize } from "@mantine/hooks";
 import { MenuIcon, XIcon } from "lucide-react";
 import Logo from "../logo/Logo";
@@ -8,12 +8,19 @@ import "./NavBar.css";
 import cn from "../../lib/utils";
 import { navLinks } from "../../config/ui/uiConfig";
 
+import { useAuth } from "../../contexts/AuthContext/useAuth";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { width } = useViewportSize();
 
   const isMobile = width < 768; // below md breakpoint
+
+  const navigate = useNavigate();
+
+  // const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -30,6 +37,12 @@ const Navbar = () => {
     if (isMobile) {
       setIsMenuOpen(false);
     }
+  };
+
+  const handleLogout = () => {
+    logout(); // Call the logout function
+    localStorage.clear(); // Clear local storage
+    navigate("/auth/login"); // Navigate to login page
   };
 
   return (
@@ -71,6 +84,21 @@ const Navbar = () => {
                 </NavLink>
               </li>
             ))}
+
+            <li>
+              <NavLink
+                to={"/auth/login"}
+                className={({ isActive }) =>
+                  cn(
+                    "text-white px-4 py-4 border-b-4 transition-all duration-300",
+                    isActive ? "border-yellow-400" : "border-transparent"
+                  )
+                }
+                onClick={isAuthenticated ? handleLogout : () => {}}
+              >
+                {isAuthenticated ? `Logout` : `Login`}
+              </NavLink>
+            </li>
 
             <li>
               <NavLink

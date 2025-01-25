@@ -9,7 +9,7 @@ import InputField from "../components/InputField/InputField";
 import Logo from "../components/logo/Logo";
 
 const AuthPage = () => {
-  const { loading, isAuthenticated, login } = useAuth();
+  const { loading, login, error } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -21,7 +21,7 @@ const AuthPage = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(-1); // Goes back to the previous page
+    navigate("/"); // Goes back to the home page
   };
 
   // Handle input changes
@@ -66,10 +66,13 @@ const AuthPage = () => {
       return;
     }
 
-    await login(formData.email, formData.password);
+    try {
+      await login(formData.email, formData.password);
 
-    // Call an API or perform login action
-    console.log("Login successful", formData);
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
 
     setErrors({});
   };
@@ -115,12 +118,13 @@ const AuthPage = () => {
               placeholder="Enter your password"
               error={errors.password}
             />
-
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             <button
               type="submit"
               className="mt-4 w-full px-4 py-2 bg-[#2b293dd3] text-white font-semibold rounded-lg shadow hover:bg-[#2b293d] transition duration-300"
+              disabled={loading}
             >
-              Create Account
+              {loading ? "Logging in..." : "Login"}
             </button>
 
             <div className="text-[#636363ce] text-sm mt-6">

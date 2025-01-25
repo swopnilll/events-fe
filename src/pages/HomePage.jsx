@@ -39,42 +39,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        <section className="py-8 px-4 bg-white">
-          <div className="max-w-screen-xl mx-auto ">
-            {/* Section Title */}
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
-              Explore Categories
-            </h2>
-
-            {/* Categories Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-              {/* Category Items */}
-              {[
-                { name: "Entertainment" },
-                { name: "Educational & Business" },
-                { name: "Cultural & Arts" },
-                { name: "Sports & Fitness" },
-                { name: "Technology & Innovation" },
-                { name: "Travel & Adventure" },
-              ].map((category, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center text-center space-y-3"
-                >
-                  {/* Circular Avatar with First Letter */}
-                  <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full flex items-center justify-center bg-yellow-700 text-white font-bold text-xl md:text-2xl lg:text-3xl shadow">
-                    {category.name[0]} {/* Display the first letter */}
-                  </div>
-                  {/* Category Name */}
-                  <p className="text-sm md:text-base font-medium text-gray-700">
-                    {category.name}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section className="py-8 px-4 bg-gray-50">
           <div className="max-w-screen-xl mx-auto">
             {/* Section Title */}

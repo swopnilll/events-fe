@@ -1,19 +1,13 @@
 import { api } from "../api"; // Importing Axios instance
 
 // Login API Call
-export const loginApi = async (username, password) => {
+export const loginApi = async (email, password) => {
   try {
-    console.log({ username, password });
+    const response = await api.post("/login", { email, password });
 
-    //const response = await api.post("/login", { username, password });
+    const { data } = response;
 
-    //const { userData } = response.data;
-
-    const userData = {
-      fullname: "swopnil",
-    };
-
-    return { userData }; // Return token and user data
+    return { data }; // Return token and user data
   } catch (error) {
     throw new Error("Login failed");
   }
