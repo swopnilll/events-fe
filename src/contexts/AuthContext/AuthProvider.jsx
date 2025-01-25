@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { AuthContext } from "./AuthContext";
 import { loginApi, logoutApi } from "../../services/apis/auth";
+import { registerApi } from "../../services/apis/register";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // User object
@@ -39,6 +40,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Register function
+  const register = async (formData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data } = await registerApi(formData); // Call the register API
+
+      // Optionally log in the user after successful registration
+      setUser(data?.user);
+      localStorage.setItem("authUser", JSON.stringify(data?.user));
+      localStorage.setItem("authToken", data?.token);
+
+      return { success: true };
+    } catch (error) {
+      console.error("Registration failed:", error);
+      setError(error.message || "Registration failed.");
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Logout function
   const logout = async () => {
     try {
@@ -58,6 +82,7 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated,
       login,
       logout,
+      register,
       error,
     }),
     [user, loading, isAuthenticated, error]

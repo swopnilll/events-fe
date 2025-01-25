@@ -9,6 +9,8 @@ import InputField from "../components/InputField/InputField";
 
 import Logo from "../components/logo/Logo";
 
+import { useAuth } from "../contexts/AuthContext/useAuth";
+
 const SignUp = ({}) => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -17,12 +19,15 @@ const SignUp = ({}) => {
   });
 
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
 
   const navigate = useNavigate();
 
   const handleBack = () => {
     navigate(-1); // Goes back to the previous page
   };
+
+  const { register } = useAuth();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -62,7 +67,7 @@ const SignUp = ({}) => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = validate();
@@ -72,10 +77,17 @@ const SignUp = ({}) => {
       return;
     }
 
-    // Call an API or perform login action
-    console.log("Register successful", formData);
-
-    setErrors({});
+    try {
+      const response = await register(formData); // Call register from context
+      if (response.success) {
+        window.showToast("Successfully registered", "success");
+        navigate("/"); // Navigate to login page after success
+      } else {
+        setApiError(response.error); // Show API error
+      }
+    } catch (error) {
+      setApiError("Something went wrong. Please try again.");
+    }
   };
 
   return (

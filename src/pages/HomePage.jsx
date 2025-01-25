@@ -1,10 +1,28 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth hook
 import SearchInput from "../features/Events/components/SearchInput";
 
 import EventCard from "../features/Events/components/EventCard";
+import Filter from "../features/Events/components/Filter";
 
 const HomePage = () => {
   const { loading, isAuthenticated } = useAuth();
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("/events.json")
+      .then((response) => response.json())
+      .then((data) => setEvents(data))
+      .catch((error) => console.error("Error loading event data:", error));
+  }, []);
+
+  const applyFilter = (e, filterBy, optionName) => {
+    console.log(
+      `${
+        e.target.checked ? "Applied" : "Removed"
+      }: ${optionName} in ${filterBy}`
+    );
+  };
 
   console.log({ loading, isAuthenticated });
 
@@ -39,80 +57,41 @@ const HomePage = () => {
           </div>
         </div>
 
-        <section className="py-8 px-4 bg-gray-50">
-          <div className="max-w-screen-xl mx-auto">
+        {/* List */}
+        <section className="w-full flex justify-center md:mt-6 px-4">
+          <div className="w-full md:w-3/4 max-w-screen-xl">
             {/* Section Title */}
             <h2 className="text-2xl md:text-3xl font-bold  text-gray-800 mb-6">
               Popular Events
             </h2>
-
-            {/* Event Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Card 1 */}
-              <EventCard
-                image="/images/events/event1.svg"
-                title="Startup Talks - Innovative event for founders & Startup Enthusiasts of Delhi"
-                date="Jan 25, 2025"
-                location="Delhi"
-                isPriced={true}
-                time="4pm to 6pm"
-                price="100"
-              />
-              <EventCard
-                image="/images/events/event1.svg"
-                title="Tech Innovators Meetup"
-                date="Feb 15, 2025"
-                location="Mumbai"
-                isPriced={true}
-                time="4pm to 6pm"
-                price="200"
-              />
-
-              <EventCard
-                image="/images/events/event1.svg"
-                title="Startup Talks - Innovative event for founders & Startup Enthusiasts of Delhi"
-                date="Jan 25, 2025"
-                location="Delhi"
-                isPriced={true}
-                time="4pm to 6pm"
-                price="100"
-              />
-
-              <EventCard
-                image="/images/events/event1.svg"
-                title="Tech Innovators Meetup"
-                date="Feb 15, 2025"
-                location="Mumbai"
-                isPriced={true}
-                time="4pm to 6pm"
-                price="200"
-              />
-
-              <EventCard
-                image="/images/events/event1.svg"
-                title="Startup Talks - Innovative event for founders & Startup Enthusiasts of Delhi"
-                date="Jan 25, 2025"
-                location="Delhi"
-                isPriced={true}
-                time="4pm to 6pm"
-                price="100"
-              />
-
-              <EventCard
-                image="/images/events/event1.svg"
-                title="Tech Innovators Meetup"
-                date="Feb 15, 2025"
-                location="Mumbai"
-                isPriced={true}
-                time="4pm to 6pm"
-                price="200"
+            <div className="w-full bg-white p-4 md:flex md:flex-col space-y-8">
+              {/* Date Filter - tag */}
+              <Filter
+                filterBy="Date"
+                options={[
+                  { name: "All", handler: applyFilter },
+                  { name: "Today", handler: applyFilter },
+                  { name: "Tomorrow", handler: applyFilter },
+                  { name: "This Weekend", handler: applyFilter },
+                  { name: "Free", handler: applyFilter },
+                ]}
+                type="tag"
               />
             </div>
-
-            <div className="flex justify-center mt-8">
-              <button className="bg-[#FFE047] text-black px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-                See More
-              </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.map((event, index) => (
+                <EventCard
+                  key={index}
+                  className="flex flex-col items-center text-center space-y-3"
+                  image={event.image}
+                  title={event.title}
+                  date={event.date}
+                  location={event.location}
+                  isPriced={event.isPriced}
+                  time={event.time}
+                  price={event.price}
+                ></EventCard>
+              ))}
             </div>
           </div>
         </section>
