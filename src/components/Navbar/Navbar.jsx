@@ -1,14 +1,17 @@
 import { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+
 import { useViewportSize } from "@mantine/hooks";
 import { MenuIcon, XIcon, User } from "lucide-react";
-import Logo from "../logo/Logo";
 
 import "./NavBar.css";
+import Logo from "../logo/Logo";
 import cn from "../../lib/utils";
 import { navLinks } from "../../config/ui/uiConfig";
 
 import { useAuth } from "../../contexts/AuthContext/useAuth";
+import { useLoader } from "../../contexts/LoaderContext/useLoader";
+import { useToaster } from "../../contexts/ToasterContext/useToaster";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,7 +24,9 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   // const { isAuthenticated } = useAuth();
+  const { showToast } = useToaster();
   const { isAuthenticated, logout, user } = useAuth();
+  const { showLoader, hideLoader } = useLoader();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,10 +45,23 @@ const Navbar = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout(); // Call the logout function
-    localStorage.clear(); // Clear local storage
-    navigate("/auth/login"); // Navigate to login page
+  const handleLogout = async () => {
+    console.log("i am calllleddd");
+    try {
+      showLoader();
+      const response = await logout();
+
+      if (response.success) {
+        showToast("Successfully logged Out", "success");
+        navigate(-1); // Navigate to homepage
+      } else {
+        showToast("Logout failed", "error");
+      }
+    } catch (error) {
+      showToast("Something went wrong", "error");
+    } finally {
+      hideLoader();
+    }
   };
 
   const toggleDropdown = () => {

@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
+import { useToaster } from "../../contexts/ToasterContext/useToaster";
 
 const Toaster = () => {
-  const [toast, setToast] = useState({ message: "", type: "", visible: false });
-
-  // Function to show the toast
-  const showToast = (message, type = "info") => {
-    setToast({ message, type, visible: true });
-
-    // Automatically hide the toast after 3 seconds
-    setTimeout(() => {
-      setToast((prevToast) => ({ ...prevToast, visible: false }));
-    }, 3000);
-  };
-
-  useEffect(() => {
-    // Attach the showToast function globally for easy access
-    window.showToast = showToast;
-  }, []);
+  const { toast } = useToaster();
 
   return (
     <div
-      className={`fixed bottom-4 right-4 max-w-sm px-4 py-3 rounded-lg shadow-lg transition-all transform ${
-        toast.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      className={`fixed top-4 right-4 max-w-sm px-4 py-3 rounded-lg shadow-lg transition-all transform ${
+        toast.visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
       } ${
         toast.type === "success"
           ? "bg-green-500 text-white"

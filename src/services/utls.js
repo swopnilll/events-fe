@@ -3,6 +3,18 @@ export const getAuthToken = () => {
   return localStorage.getItem("authToken");
 };
 
+export const setAuthToken = (token) => {
+  localStorage.setItem("authToken", token);
+};
+
+export const setAuthUser = (user) => {
+  localStorage.setItem("authUser", JSON.stringify(user));
+};
+
+export const clearAuthToken = () => {
+  localStorage.removeItem("authUser");
+};
+
 // Function to get the base URL from environment variables with a fallback to localhost
 export const getBaseURL = () => {
   return import.meta.env.VITE_API_URL || "http://localhost:3000/api";

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { AuthContext } from "./AuthContext";
 import { loginApi, logoutApi } from "../../services/apis/auth";
 import { registerApi } from "../../services/apis/register";
+import { clearAuthToken, setAuthToken, setAuthUser } from "../../services/utls";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // User object
@@ -30,11 +31,13 @@ export const AuthProvider = ({ children }) => {
 
       setUser(data?.user);
 
-      localStorage.setItem("authUser", JSON.stringify(data?.user));
-      localStorage.setItem("authToken", data?.token);
+      setAuthUser(data?.user); //set auth user to local storage
+      setAuthToken(data?.token); //set auth token to local storage
+      return { success: true };
     } catch (error) {
       console.error("Login failed:", error);
       setError("Invalid email or password. Please try again."); // Set error message
+      return { success: false, error: error.message };
     } finally {
       setLoading(false);
     }
@@ -50,8 +53,9 @@ export const AuthProvider = ({ children }) => {
 
       // Optionally log in the user after successful registration
       setUser(data?.user);
-      localStorage.setItem("authUser", JSON.stringify(data?.user));
-      localStorage.setItem("authToken", data?.token);
+
+      setAuthUser(data?.user); //set auth user to local storage
+      setAuthToken(data?.token); //set auth token to local storage
 
       return { success: true };
     } catch (error) {
@@ -68,9 +72,11 @@ export const AuthProvider = ({ children }) => {
     try {
       await logoutApi(); // Call logout API
       setUser(null);
-      localStorage.removeItem("authUser"); // Remove user from localStorage
+      clearAuthToken(); // Remove user from localStorage
+
+      return { success: true };
     } catch (error) {
-      console.error("Logout failed:", error);
+      return { success: false, error: error.message };
     }
   };
 

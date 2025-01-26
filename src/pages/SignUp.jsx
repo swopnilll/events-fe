@@ -10,6 +10,8 @@ import InputField from "../components/InputField/InputField";
 import Logo from "../components/logo/Logo";
 
 import { useAuth } from "../contexts/AuthContext/useAuth";
+import { useLoader } from "../contexts/LoaderContext/useLoader";
+import { useToaster } from "../contexts/ToasterContext/useToaster";
 
 const SignUp = ({}) => {
   const [formData, setFormData] = useState({
@@ -24,10 +26,16 @@ const SignUp = ({}) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(-1); // Goes back to the previous page
+    navigate("/"); // Goes back to the previous page
+  };
+
+  const navigateToLogin = () => {
+    navigate("/auth/login");
   };
 
   const { register } = useAuth();
+  const { showLoader, hideLoader } = useLoader();
+  const { showToast } = useToaster();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -78,15 +86,20 @@ const SignUp = ({}) => {
     }
 
     try {
+      showLoader();
       const response = await register(formData); // Call register from context
       if (response.success) {
-        window.showToast("Successfully registered", "success");
-        navigate("/"); // Navigate to login page after success
+        showToast("Successfully registered", "success");
+        navigate("/"); // Navigate to homepage
       } else {
         setApiError(response.error); // Show API error
+        showToast("Registration failed", "error");
       }
     } catch (error) {
       setApiError("Something went wrong. Please try again.");
+      showToast("Something went wrong", "error");
+    } finally {
+      hideLoader();
     }
   };
 
@@ -150,7 +163,10 @@ const SignUp = ({}) => {
 
             <div className="text-[#636363ce] text-sm mt-6">
               <span>Already have an account? </span>
-              <span className="cursor-pointer text-[#636363] font-bold">
+              <span
+                className="cursor-pointer text-[#636363] font-bold"
+                onClick={navigateToLogin}
+              >
                 {" "}
                 Sign In
               </span>
