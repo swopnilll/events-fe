@@ -212,7 +212,7 @@ const EventCreation = () => {
                 onClick={() => setFormData({ ...formData, isFreeEvent: false })}
               >
                 <img
-                  src="/public/images/ticket.svg"
+                  src="/images/ticket.svg"
                   alt="Ticketed Event"
                   className="w-20 h-20"
                 />
@@ -230,7 +230,7 @@ const EventCreation = () => {
                 onClick={() => setFormData({ ...formData, isFreeEvent: true })}
               >
                 <img
-                  src="/public/images/free-event-image.svg"
+                  src="images/free-event-image.svg"
                   alt="Free Event"
                   className="w-20 h-20"
                 />
