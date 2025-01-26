@@ -11,6 +11,8 @@ import EventList from "../features/Events/pages/EventList";
 import EventDetails from "../features/Events/pages/EventDetails";
 import EventCreation from "../features/Events/pages/EventCreation";
 
+import ProtectedRoute from "./ProtectedRoute";
+
 const AppRoutes = () => {
   return (
     <>
@@ -20,7 +22,14 @@ const AppRoutes = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/events" element={<EventList />} />
             <Route path="/events/:id" element={<EventDetails />} />
-            <Route path="/create-event" element={<EventCreation />} />
+            <Route
+              path="/create-event"
+              element={
+                <ProtectedRoute>
+                  <EventCreation />
+                </ProtectedRoute>
+              }
+            />
           </Route>
 
           <Route path="/auth" element={<AuthLayout />}>

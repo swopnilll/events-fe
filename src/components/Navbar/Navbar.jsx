@@ -1,19 +1,32 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useState, useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+
 import { useViewportSize } from "@mantine/hooks";
-import { MenuIcon, XIcon } from "lucide-react";
-import Logo from "../logo/Logo";
+import { MenuIcon, XIcon, User } from "lucide-react";
 
 import "./NavBar.css";
+import Logo from "../logo/Logo";
 import cn from "../../lib/utils";
 import { navLinks } from "../../config/ui/uiConfig";
 
+import { useAuth } from "../../contexts/AuthContext/useAuth";
+import { useLoader } from "../../contexts/LoaderContext/useLoader";
+import { useToaster } from "../../contexts/ToasterContext/useToaster";
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { width } = useViewportSize();
 
   const isMobile = width < 768; // below md breakpoint
+
+  const navigate = useNavigate();
+
+  // const { isAuthenticated } = useAuth();
+  const { showToast } = useToaster();
+  const { isAuthenticated, logout, user } = useAuth();
+  const { showLoader, hideLoader } = useLoader();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -30,6 +43,33 @@ const Navbar = () => {
     if (isMobile) {
       setIsMenuOpen(false);
     }
+  };
+
+  const handleLogout = async () => {
+    console.log("i am calllleddd");
+    try {
+      showLoader();
+      const response = await logout();
+
+      if (response.success) {
+        showToast("Successfully logged Out", "success");
+        navigate(-1); // Navigate to homepage
+      } else {
+        showToast("Logout failed", "error");
+      }
+    } catch (error) {
+      showToast("Something went wrong", "error");
+    } finally {
+      hideLoader();
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
   };
 
   return (
@@ -55,30 +95,99 @@ const Navbar = () => {
                 "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-200 p-8 h-full overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-full"
             )}
           >
-            {navLinks.map((link) => {
-              return (
-                <li key={link.name} className="relative">
-                  <NavLink
-                    to={link.path}
-                    className={({ isActive }) =>
-                      cn(
-                        "text-white px-4 py-4 border-b-4 transition-all duration-300",
-                        isActive ? "border-yellow-400" : "border-transparent"
-                      )
-                    }
-                    onClick={closeMenuOnMobile}
+            {navLinks.map((link) => (
+              <li key={link.name} className="relative">
+                <NavLink
+                  to={link.path}
+                  className={({ isActive }) =>
+                    cn(
+                      "text-white px-4 py-4 border-b-4 transition-all duration-300",
+                      isActive ? "border-yellow-400" : "border-transparent"
+                    )
+                  }
+                  onClick={closeMenuOnMobile}
+                >
+                  {link.name}
+                </NavLink>
+              </li>
+            ))}
+            {!isAuthenticated && (
+              <li>
+                <NavLink
+                  to={"/auth/login"}
+                  className={({ isActive }) =>
+                    cn(
+                      "text-white px-4 py-4 border-b-4 transition-all duration-300",
+                      isActive ? "border-yellow-400" : "border-transparent"
+                    )
+                  }
+                >
+                  Login
+                </NavLink>
+              </li>
+            )}
+
+            {!isAuthenticated && (
+              <li>
+                <NavLink
+                  to={"/auth/signup"}
+                  className={({ isActive }) =>
+                    cn(
+                      "text-white px-4 py-4 border-b-4 transition-all duration-300",
+                      isActive ? "border-yellow-400" : "border-transparent"
+                    )
+                  }
+                >
+                  Register
+                </NavLink>
+              </li>
+            )}
+
+            <li>
+              <NavLink
+                to={"/create-event"}
+                className="text-black rounded-lg py-2 px-4 bg-[#FFE047]"
+              >
+                Create Events
+              </NavLink>
+            </li>
+
+            {isAuthenticated && (
+              <li className="relative">
+                <div
+                  className="flex items-center cursor-pointer"
+                  onClick={toggleDropdown}
+                >
+                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                    <User className="text-white w-6 h-6" />
+                  </div>
+                </div>
+
+                {isDropdownOpen && (
+                  <div
+                    className="absolute right-0 mt-2  bg-white rounded-lg shadow-lg py-2 z-50"
+                    onMouseLeave={closeDropdown}
                   >
-                    {link.name}
-                  </NavLink>
-                </li>
-              );
-            })}
-            <NavLink
-              to={"/create-event"}
-              className="text-black rounded-lg py-2 px-4 bg-[#FFE047]"
-            >
-              Create Events
-            </NavLink>
+                    {/* User Info */}
+                    <div className="px-4 py-2 border-b border-gray-200">
+                      <p className="text-sm text-gray-600">Logged in as:</p>
+                      <p className="font-semibold text-gray-800">
+                        {user?.name}
+                      </p>
+                      <p className="text-sm text-gray-500">{user?.email}</p>
+                    </div>
+
+                    {/* Logout Button */}
+                    <button
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </li>
+            )}
           </ul>
 
           <button

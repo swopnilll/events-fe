@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth hook
 
+import { useLoader } from "../contexts/LoaderContext/useLoader";
+import { useToaster } from "../contexts/ToasterContext/useToaster";
+
 import { XIcon } from "lucide-react";
 
 import InputField from "../components/InputField/InputField";
 import Logo from "../components/logo/Logo";
 
 const AuthPage = () => {
-  const { loading, isAuthenticated, login } = useAuth();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,10 +19,14 @@ const AuthPage = () => {
 
   const [errors, setErrors] = useState({});
 
+  const { showToast } = useToaster();
+  const { loading, login, error } = useAuth();
+  const { showLoader, hideLoader } = useLoader();
+
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(-1); // Goes back to the previous page
+    navigate("/");
   };
 
   // Handle input changes
@@ -55,6 +60,10 @@ const AuthPage = () => {
     return newErrors;
   };
 
+  const navigatetoSignup = () => {
+    navigate("/auth/signUp");
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,10 +75,21 @@ const AuthPage = () => {
       return;
     }
 
-    await login(formData.email, formData.password);
+    try {
+      showLoader();
+      const response = await login(formData.email, formData.password);
 
-    // Call an API or perform login action
-    console.log("Login successful", formData);
+      if (response?.success) {
+        showToast("Login Successfull", "success");
+        navigate(-1);
+      } else {
+        showToast("Login failed", "error");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+      hideLoader();
+    }
 
     setErrors({});
   };
@@ -115,17 +135,21 @@ const AuthPage = () => {
               placeholder="Enter your password"
               error={errors.password}
             />
-
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             <button
               type="submit"
               className="mt-4 w-full px-4 py-2 bg-[#2b293dd3] text-white font-semibold rounded-lg shadow hover:bg-[#2b293d] transition duration-300"
+              disabled={loading}
             >
-              Create Account
+              {loading ? "Logging in..." : "Login"}
             </button>
 
             <div className="text-[#636363ce] text-sm mt-6">
               <span>Don’t have an account? </span>
-              <span className="cursor-pointer text-[#636363] font-bold">
+              <span
+                className="cursor-pointer text-[#636363] font-bold"
+                onClick={navigatetoSignup}
+              >
                 {" "}
                 Sign Up
               </span>
