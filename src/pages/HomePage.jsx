@@ -2,19 +2,68 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth hook
 import SearchInput from "../features/Events/components/SearchInput";
 
+import { useNavigate } from "react-router-dom";
+
 import EventCard from "../features/Events/components/EventCard";
 import Filter from "../features/Events/components/Filter";
 
+import { getEvents } from "../services/apis/events";
+
+import { useLoader } from "../contexts/LoaderContext/useLoader";
+import { useToaster } from "../contexts/ToasterContext/useToaster";
+
+import { formatDate } from "../utils/utils";
+
 const HomePage = () => {
-  const { loading, isAuthenticated } = useAuth();
   const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
+
+  const { showToast } = useToaster();
+  const { showLoader, hideLoader } = useLoader();
+
+  const fallbackImageUrl = "/images/events/event1.svg";
+
+  // Fetch events from the API
+  const fetchEvents = async () => {
+    try {
+      showLoader(); // Show loader
+      const eventsData = await getEvents();
+
+      console.log("from home page", eventsData);
+      setEvents(eventsData); // Set events data
+    } catch (error) {
+      console.error("Error loading event data:", error);
+      showToast(error.message || "Failed to load events", "error"); // Show error toast
+    } finally {
+      hideLoader(); // Hide loader
+    }
+  };
+
+  // Apply search
+  const applySearch = () => {
+    let filtered = [...events];
+
+    // Apply search query
+    if (searchQuery) {
+      filtered = filtered.filter((event) =>
+        event.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredEvents(filtered);
+  };
 
   useEffect(() => {
-    fetch("/events.json")
-      .then((response) => response.json())
-      .then((data) => setEvents(data))
-      .catch((error) => console.error("Error loading event data:", error));
+    fetchEvents();
   }, []);
+
+  // Update filtered events when filters, events,
+  useEffect(() => {
+    applySearch();
+  }, [searchQuery, events]);
 
   const applyFilter = (e, filterBy, optionName) => {
     console.log(
@@ -24,7 +73,9 @@ const HomePage = () => {
     );
   };
 
-  console.log({ loading, isAuthenticated });
+  const navigateToCreateEvent = () => {
+    navigate("/create-event");
+  };
 
   return (
     <>
@@ -53,7 +104,7 @@ const HomePage = () => {
 
           {/* Search Input */}
           <div className="relative w-full md:w-1/2 mt-5 z-10">
-            <SearchInput />
+            <SearchInput query={searchQuery} setQuery={setSearchQuery} />
           </div>
         </div>
 
@@ -79,17 +130,17 @@ const HomePage = () => {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {events.map((event, index) => (
+              {filteredEvents.map((event, index) => (
                 <EventCard
                   key={index}
                   className="flex flex-col items-center text-center space-y-3"
-                  image={event.image}
-                  title={event.title}
-                  date={event.date}
-                  location={event.location}
-                  isPriced={event.isPriced}
-                  time={event.time}
-                  price={event.price}
+                  image={event?.event_images[0]?.image_url || fallbackImageUrl}
+                  title={event?.title}
+                  date={formatDate(event?.start_date)}
+                  location={event?.location}
+                  isPriced={event?.isPaid == 1 ? `Paid` : `Free`}
+                  time="12 PM"
+                  price={event?.price}
                 ></EventCard>
               ))}
             </div>
@@ -118,7 +169,9 @@ const HomePage = () => {
                 alt=""
                 class="h-6 mr-2"
               /> */}
-              <span className="font-bold">Create Event</span>
+              <span className="font-bold" onClick={navigateToCreateEvent}>
+                Create Event
+              </span>
             </button>
           </div>
         </section>

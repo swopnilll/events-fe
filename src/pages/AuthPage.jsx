@@ -81,7 +81,7 @@ const AuthPage = () => {
 
       if (response?.success) {
         showToast("Login Successfull", "success");
-        navigate(-1);
+        navigate("/");
       } else {
         showToast("Login failed", "error");
       }

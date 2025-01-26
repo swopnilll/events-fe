@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Search, X } from "lucide-react";
 
-const SearchInput = () => {
-  const [query, setQuery] = useState("");
-
+const SearchInput = ({ query, setQuery }) => {
   const handleClear = () => {
     setQuery("");
+  };
+
+  const handleChange = (e) => {
+    setQuery(e.target.value); // Update query when typing
   };
 
   return (
@@ -16,7 +18,7 @@ const SearchInput = () => {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleChange}
         placeholder="Search..."
         className="flex-grow p-2 text-gray-700 outline-none"
       />
