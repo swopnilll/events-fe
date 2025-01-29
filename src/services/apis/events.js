@@ -5,6 +5,8 @@ export const getEvents = async () => {
   try {
     const response = await api.get("/events");
 
+    console.log({ response });
+
     return response?.data || [];
   } catch (error) {
     throw new Error("Error while Calling events API");
@@ -20,7 +22,7 @@ export const createEventApi = async (eventData) => {
   const payload = {
     title: eventData?.title,
     description: eventData?.description,
-    start_date: "2025-05-10",
+    start_date: eventData.dateTime,
     category_id: "1",
     language: "English",
     event_type: "online",

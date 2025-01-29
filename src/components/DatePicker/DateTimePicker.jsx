@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+
+import { format } from "date-fns";
+
 import "react-datepicker/dist/react-datepicker.css"; // import the styles
 
 const DateTimePicker = ({
@@ -11,7 +14,7 @@ const DateTimePicker = ({
   placeholder,
 }) => {
   const handleDateChange = (date) => {
-    onChange({ target: { name, value: date } });
+    onChange({ target: { name, value: format(date, "yyyy-MM-dd HH:mm:ss") } });
   };
 
   return (
@@ -25,20 +28,17 @@ const DateTimePicker = ({
       <DatePicker
         selected={value}
         onChange={handleDateChange}
-        showTimeSelect
-        dateFormat="Pp"
-        timeIntervals={15}
-        timeCaption="Time"
         placeholderText={placeholder}
+        dateFormat="yyyy-MM-dd HH:mm:ss"
         className={`w-full px-4 py-2 border ${
           error ? "border-red-500" : "border-gray-300"
         } rounded-lg shadow-sm focus:outline-none focus:ring-2 ${
           error ? "focus:ring-red-500" : "focus:ring-blue-500"
-        } ${error ? "focus:border-red-500" : "focus:border-blue-500"} text-gray-700`}
+        } ${
+          error ? "focus:border-red-500" : "focus:border-blue-500"
+        } text-gray-700`}
       />
-      {error && (
-        <p className="mt-1 text-sm text-red-500">{error}</p>
-      )}
+      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 };

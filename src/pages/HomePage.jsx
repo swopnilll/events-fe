@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth hook
+
 import SearchInput from "../features/Events/components/SearchInput";
 
 import { useNavigate } from "react-router-dom";
@@ -16,12 +17,15 @@ import { formatDate } from "../utils/utils";
 
 const HomePage = () => {
   const [events, setEvents] = useState([]);
+
   const [filteredEvents, setFilteredEvents] = useState([]);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
 
   const { showToast } = useToaster();
+
   const { showLoader, hideLoader } = useLoader();
 
   const fallbackImageUrl = "/images/events/event1.svg";
@@ -30,10 +34,14 @@ const HomePage = () => {
   const fetchEvents = async () => {
     try {
       showLoader(); // Show loader
+
       const eventsData = await getEvents();
 
       console.log("from home page", eventsData);
+
       setEvents(eventsData); // Set events data
+
+      setFilteredEvents(eventsData);
     } catch (error) {
       console.error("Error loading event data:", error);
       showToast(error.message || "Failed to load events", "error"); // Show error toast
@@ -59,11 +67,6 @@ const HomePage = () => {
   useEffect(() => {
     fetchEvents();
   }, []);
-
-  // Update filtered events when filters, events,
-  useEffect(() => {
-    applySearch();
-  }, [searchQuery, events]);
 
   const applyFilter = (e, filterBy, optionName) => {
     console.log(
