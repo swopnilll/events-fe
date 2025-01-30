@@ -100,9 +100,9 @@ const HomePage = () => {
                   title={event?.title}
                   date={formatDate(event?.start_date)}
                   location={event?.location}
-                  isPriced={event?.isPaid == 1 ? `Paid` : `Free`}
+                  isPriced={event?.isPaid == 1 ? true : false}
                   time="12 PM"
-                  price={event?.price}
+                  price={event.isPaid ? event?.price : 0}
                 ></EventCard>
               ))}
             </div>

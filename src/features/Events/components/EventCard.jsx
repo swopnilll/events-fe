@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import { Ticket } from "lucide-react";
 
@@ -13,11 +12,15 @@ const EventCard = ({ image, title, date, location, isPriced, price, time }) => {
           <div className="mt-1">{time}</div>
         </div>
 
-        {isPriced && (
+        {isPriced ? (
           <p className="mt-2 text-gray-700 flex items-center gap-2">
             <Ticket className="w-5 h-5 text-green-600" />
             <span className="font-bold text-green-600">${price}</span>
           </p>
+        ) : (
+          <div className="bg-[#FFE046] text-[10px] px-2 py-1 rounded-full w-fit mt-2">
+            Free
+          </div>
         )}
       </div>
     </div>
