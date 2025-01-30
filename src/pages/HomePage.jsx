@@ -1,84 +1,43 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth hook
-
-import SearchInput from "../features/Events/components/SearchInput";
-
 import { useNavigate } from "react-router-dom";
 
-import EventCard from "../features/Events/components/EventCard";
-import Filter from "../features/Events/components/Filter";
-
-import { getEvents } from "../services/apis/events";
-
-import { useLoader } from "../contexts/LoaderContext/useLoader";
 import { useToaster } from "../contexts/ToasterContext/useToaster";
 
+import Filter from "../features/Events/components/Filter";
+import EventCard from "../features/Events/components/EventCard";
+import SearchInput from "../features/Events/components/SearchInput";
+
 import { formatDate } from "../utils/utils";
+import { getEvents } from "../services/apis/events";
 
 const HomePage = () => {
   const [events, setEvents] = useState([]);
-
-  const [filteredEvents, setFilteredEvents] = useState([]);
-
-  const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
 
   const { showToast } = useToaster();
 
-  const { showLoader, hideLoader } = useLoader();
-
   const fallbackImageUrl = "/images/events/event1.svg";
 
-  // Fetch events from the API
   const fetchEvents = async () => {
     try {
-      showLoader(); // Show loader
-
       const eventsData = await getEvents();
 
-      console.log("from home page", eventsData);
-
       setEvents(eventsData); // Set events data
-
-      setFilteredEvents(eventsData);
     } catch (error) {
-      console.error("Error loading event data:", error);
       showToast(error.message || "Failed to load events", "error"); // Show error toast
-    } finally {
-      hideLoader(); // Hide loader
     }
-  };
-
-  // Apply search
-  const applySearch = () => {
-    let filtered = [...events];
-
-    // Apply search query
-    if (searchQuery) {
-      filtered = filtered.filter((event) =>
-        event.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    setFilteredEvents(filtered);
-  };
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const applyFilter = (e, filterBy, optionName) => {
-    console.log(
-      `${
-        e.target.checked ? "Applied" : "Removed"
-      }: ${optionName} in ${filterBy}`
-    );
   };
 
   const navigateToCreateEvent = () => {
     navigate("/create-event");
   };
+
+  const applyFilter = () => {};
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   return (
     <>
@@ -107,7 +66,7 @@ const HomePage = () => {
 
           {/* Search Input */}
           <div className="relative w-full md:w-1/2 mt-5 z-10">
-            <SearchInput query={searchQuery} setQuery={setSearchQuery} />
+            <SearchInput />
           </div>
         </div>
 
@@ -133,7 +92,7 @@ const HomePage = () => {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEvents.map((event, index) => (
+              {events.map((event, index) => (
                 <EventCard
                   key={index}
                   className="flex flex-col items-center text-center space-y-3"
@@ -167,11 +126,6 @@ const HomePage = () => {
 
           <div className="flex justify-center mt-6">
             <button className="flex items-center bg-[#ffe047] text-black py-2 px-6 rounded-lg">
-              {/* <img
-                src="assets/images/create-event-button.svg"
-                alt=""
-                class="h-6 mr-2"
-              /> */}
               <span className="font-bold" onClick={navigateToCreateEvent}>
                 Create Event
               </span>

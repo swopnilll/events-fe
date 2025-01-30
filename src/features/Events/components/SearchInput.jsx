@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import { Search, X } from "lucide-react";
 
-const SearchInput = ({ query, setQuery }) => {
-  const handleClear = () => {
-    setQuery("");
-  };
-
-  const handleChange = (e) => {
-    setQuery(e.target.value); // Update query when typing
-  };
-
+const SearchInput = () => {
   return (
     <div className="flex items-center border rounded-md shadow-sm bg-white">
       <div className="p-2">
@@ -17,16 +9,14 @@ const SearchInput = ({ query, setQuery }) => {
       </div>
       <input
         type="text"
-        value={query}
-        onChange={handleChange}
         placeholder="Search..."
         className="flex-grow p-2 text-gray-700 outline-none"
       />
-      {query && (
-        <button onClick={handleClear} className="p-2">
+      {
+        <button className="p-2">
           <X className="w-5 h-5 text-gray-500" />
         </button>
-      )}
+      }
     </div>
   );
 };

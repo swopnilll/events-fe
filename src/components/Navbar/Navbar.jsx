@@ -23,8 +23,7 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  // const { isAuthenticated } = useAuth();
-  const { showToast } = useToaster();
+  const { showToast } = useToaster(); // const { isAuthenticated } = useAuth();
   const { isAuthenticated, logout, user } = useAuth();
   const { showLoader, hideLoader } = useLoader();
 
