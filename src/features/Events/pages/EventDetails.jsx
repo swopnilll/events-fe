@@ -63,7 +63,7 @@ const EventDetails = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="w-full p-4 md:max-w-[1920px] md:w-[90%] md:mx-auto relative">
+    <div className="w-full p-4 md:max-w-[1920px] md:w-[90%] md:mx-auto relative pb-12 pt-12">
       <div className="flex flex-col">
         {/* Event Image */}
         <img
@@ -154,7 +154,7 @@ const EventDetails = () => {
       {/* Back Arrow */}
       <ArrowLeft
         onClick={() => navigate(-1)}
-        className="hidden md:block w-8 h-8 text-black left-[-46px] top-8 absolute cursor-pointer"
+        className="hidden md:block w-8 h-8 text-black left-[-46px] top-11 absolute cursor-pointer"
       />
     </div>
   );

@@ -150,8 +150,8 @@ const HomePage = () => {
         </div>
 
         {/* List */}
-        <section className="w-full flex justify-center md:mt-6 px-4">
-          <div className="w-full md:w-3/4 max-w-screen-xl">
+        <section className="w-full flex justify-center md:mt-6 px-4 pt-4 pb-4">
+          <div className="w-full md:w-3/4 max-w-screen-xl ">
             {/* Section Title */}
             <h2 className="text-2xl md:text-3xl font-bold  text-gray-800 mb-6">
               Popular Events
@@ -191,7 +191,7 @@ const HomePage = () => {
 
         {/* <!-- Create Event Banner --> */}
         <section
-          className="w-full bg-cover bg-no-repeat bg-right md:bg-left py-10 px-6 bg-[#2B293D] text-[#ffe047]"
+          className="w-full bg-cover bg-no-repeat bg-right md:bg-left py-10 px-6 bg-[#2B293D] text-[#ffe047] mt-8"
           style={{
             backgroundImage: "url('/assets/images/create-event-banner.svg')",
           }}
