@@ -39,8 +39,6 @@ const HomePage = () => {
     navigate("/create-event");
   };
 
-  const applyFilter = () => {};
-
   const applyTextSearchFilter = (event) => {
     console.log(event.target.value);
 
@@ -57,6 +55,53 @@ const HomePage = () => {
     setFilteredEvents(events);
 
     setSearchText("");
+  };
+
+  // TODO: Replace it
+  const applyCapsuleFilter = (event, filterBy, filterName) => {
+    console.log({ filterBy, filterName });
+
+    let today = new Date();
+    let tempFilteredEvents = [...events];
+
+    let tomorrow = new Date();
+
+    let weekendDays = [6, 0]; // Saturday (6) and Sunday (0)
+
+    if (filterBy === "Date") {
+      switch (filterName) {
+        case "Today":
+          tempFilteredEvents = tempFilteredEvents.filter(
+            (ev) =>
+              new Date(ev.start_date).toDateString() === today.toDateString()
+          );
+          break;
+
+        case "Tomorrow":
+          tomorrow.setDate(today.getDate() + 1);
+          tempFilteredEvents = tempFilteredEvents.filter(
+            (ev) =>
+              new Date(ev.start_date).toDateString() === tomorrow.toDateString()
+          );
+          break;
+
+        // TODO: Fix this
+        case "This Weekend":
+          tempFilteredEvents = tempFilteredEvents.filter((ev) =>
+            weekendDays.includes(new Date(ev.start_date).getDay())
+          );
+          break;
+
+        case "Free":
+          tempFilteredEvents = tempFilteredEvents.filter((ev) => !ev.isPaid);
+          break;
+
+        default:
+          tempFilteredEvents = events;
+      }
+    }
+
+    setFilteredEvents(tempFilteredEvents);
   };
 
   useEffect(() => {
@@ -110,11 +155,11 @@ const HomePage = () => {
               <Filter
                 filterBy="Date"
                 options={[
-                  { name: "All", handler: applyFilter },
-                  { name: "Today", handler: applyFilter },
-                  { name: "Tomorrow", handler: applyFilter },
-                  { name: "This Weekend", handler: applyFilter },
-                  { name: "Free", handler: applyFilter },
+                  { name: "All", handler: applyCapsuleFilter },
+                  { name: "Today", handler: applyCapsuleFilter },
+                  { name: "Tomorrow", handler: applyCapsuleFilter },
+                  { name: "This Weekend", handler: applyCapsuleFilter },
+                  { name: "Free", handler: applyCapsuleFilter },
                 ]}
                 type="tag"
               />
