@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { ArrowLeft, Calendar, Ticket, Navigation } from "lucide-react";
+import { getEventDetail } from "../../../services/apis/events";
 
 const mockEventData = {
-	image: "/public/images/events/event1-large.svg", // Image URL
-	title: "Coldplay Concert", // Event Title
-	date: "Saturday, 2 December 2023", // Event Date
-	time: "6:30 PM", // Event Time
-	isPriced: false, // Whether the event has a ticket price
-	price: 0, // Price of the ticket (in USD)
-	location: "100/97 Opera House, Sydney, NSW", // Event Location
-	description: `
+  image: "/public/images/events/event1-large.svg", // Image URL
+  title: "Coldplay Concert", // Event Title
+  date: "Saturday, 2 December 2023", // Event Date
+  time: "6:30 PM", // Event Time
+  isPriced: false, // Whether the event has a ticket price
+  price: 0, // Price of the ticket (in USD)
+  location: "100/97 Opera House, Sydney, NSW", // Event Location
+  description: `
 	  Get ready to kick off the Christmas season in Mumbai with SOUND OF 
 	  CHRISTMAS - your favourite LIVE Christmas concert! City Youth 
 	  Movement invites you to the 4th edition of our annual Christmas 
@@ -29,126 +30,134 @@ const mockEventData = {
 };
 
 const EventDetails = () => {
-	const { eventId } = useParams();
+  const { id } = useParams();
 
-	const [eventData, setEventData] = useState(null);
+  const [eventData, setEventData] = useState(null);
 
-	const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-	const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
 
-	useEffect(() => {
-		const fetchEventDetails = () => {
-			try {
-				setLoading(true);
+  const navigate = useNavigate();
 
-				setEventData(mockEventData); // Set the fetched data into state
-			} catch (err) {
-				setError(err.message); // Handle error
-			} finally {
-				setLoading(false); // Set loading to false when the request finishes
-			}
-		};
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      try {
+        setLoading(true);
 
-		fetchEventDetails();
-	}, [eventId]);
+        let eventDetail = await getEventDetail(id);
 
-	if (loading) return <div>Loading...</div>;
+        setEventData(eventDetail); // Set the fetched data into state
+      } catch (err) {
+        setError(err.message); // Handle error
+      } finally {
+        setLoading(false); // Set loading to false when the request finishes
+      }
+    };
 
-	if (error) return <div>Error: {error}</div>;
+    fetchEventDetails();
+  }, [id]);
 
-	return (
-		<div className="w-full p-4 md:max-w-[1920px] md:w-[90%] md:mx-auto relative">
-			<div className="flex flex-col">
-				{/* Event Image */}
-				<img
-					className="rounded-lg w-full h-auto max-h-[400px] object-cover"
-					src={eventData.image}
-					alt="Event Image"
-				/>
+  if (loading) return <div>Loading...</div>;
 
-				{/* Event Information */}
-				<div className="text-gray-800 mt-6 bg-white rounded-lg shadow-lg p-6">
-					{/* Event Title */}
-					<p className="text-2xl md:text-3xl font-bold mb-4">
-						{eventData.title}
-					</p>
+  if (error) return <div>Error: {error}</div>;
 
-					{/* Date/Time and Buy Ticket CTA */}
-					<div className="flex flex-col md:flex-row justify-between mb-6">
-						{/* Date and Time */}
-						<div className="flex flex-col gap-2 mb-6">
-							<p className="text-md font-bold text-black">Date and Time</p>
-							<div className="flex items-center gap-2">
-								<Calendar className="w-5 h-5 text-gray-600" />
-								<span className="text-base font-medium">
-									{eventData.date}, {eventData.time}
-								</span>
-							</div>
-						</div>
+  return (
+    <div className="w-full p-4 md:max-w-[1920px] md:w-[90%] md:mx-auto relative">
+      <div className="flex flex-col">
+        {/* Event Image */}
+        <img
+          className="rounded-lg w-full h-auto max-h-[400px] object-cover"
+          src={eventData.image || `/public/images/events/event1-large.svg`}
+          alt="Event Image"
+        />
 
-						{/* Buy Ticket and Ticket Information */}
-						<div className="flex flex-col gap-4">
-							{eventData.isPriced ? (
-								<button className="w-fit flex items-center gap-2 bg-[#ffe047d8] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#FFE047] transition">
-									<Ticket className="w-5 h-5 text-black" />
-									<span>Buy Tickets</span>
-								</button>
-							) : (
-								<button className="w-fit flex items-center gap-2 bg-[#ffe047d8] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#FFE047] transition">
-									<Ticket className="w-5 h-5 text-black" />
-									<span>Register For Free</span>
-								</button>
-							)}
+        {/* Event Information */}
+        <div className="text-gray-800 mt-6 bg-white rounded-lg shadow-lg p-6">
+          {/* Event Title */}
+          <p className="text-2xl md:text-3xl font-bold mb-4">
+            {eventData.title}
+          </p>
 
-							<div className="mt-2">
-								<p className="font-bold text-md text-gray-800">
-									Ticket Information
-								</p>
-								{eventData.isPriced ? (
-									<div className="flex items-center gap-2 mt-1">
-										<Ticket className="w-5 h-5 text-gray-600" />
-										<div className="text-base text-gray-700">
-											<span>Standard Ticket:</span>{" "}
-											<span className="font-medium">
-												${eventData.price} Each
-											</span>
-										</div>
-									</div>
-								) : (
-									<p className="text-gray-700">
-										Tickets are free for this event.
-									</p>
-								)}
-							</div>
-						</div>
-					</div>
+          {/* Date/Time and Buy Ticket CTA */}
+          <div className="flex flex-col md:flex-row justify-between mb-6">
+            {/* Date and Time */}
+            <div className="flex flex-col gap-2 mb-6">
+              <p className="text-md font-bold text-black">Date and Time</p>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-gray-600" />
+                <span className="text-base font-medium">
+                  {eventData.start_date.split(" ")[0]},{" "}
+                  {eventData.start_date.split(" ")[1]}
+                </span>
+              </div>
+            </div>
 
-					{/* Location */}
-					<div className="flex flex-col gap-2">
-						<p className="font-bold text-md">Location</p>
-						<div className="flex gap-2">
-							<Navigation className="w-5 h-5 text-gray-600" />
-							<div>{eventData.location}</div>
-						</div>
-					</div>
+            {/* Buy Ticket and Ticket Information */}
+            <div className="flex flex-col gap-4">
+              {eventData.isPriced ? (
+                <button className="w-fit flex items-center gap-2 bg-[#ffe047d8] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#FFE047] transition">
+                  <Ticket className="w-5 h-5 text-black" />
+                  <span>Buy Tickets</span>
+                </button>
+              ) : (
+                <button className="w-fit flex items-center gap-2 bg-[#ffe047d8] text-black font-semibold px-4 py-2 rounded-lg hover:bg-[#FFE047] transition">
+                  <Ticket className="w-5 h-5 text-black" />
+                  <span>Register For Free</span>
+                </button>
+              )}
 
-					{/* Event Description */}
-					<div className="bg-gray-100 p-4 rounded-lg shadow-md mt-10">
-						<p className="font-bold text-md text-gray-800 mb-2">
-							Event Description
-						</p>
-						<p className="text-gray-700 text-base leading-relaxed">
-							{eventData.description}
-						</p>
-					</div>
-				</div>
-			</div>
+              <div className="mt-2">
+                <p className="font-bold text-md text-gray-800">
+                  Ticket Information
+                </p>
+                {eventData.isPriced ? (
+                  <div className="flex items-center gap-2 mt-1">
+                    <Ticket className="w-5 h-5 text-gray-600" />
+                    <div className="text-base text-gray-700">
+                      <span>Standard Ticket:</span>{" "}
+                      <span className="font-medium">
+                        ${eventData.price} Each
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-gray-700">
+                    Tickets are free for this event.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
 
-			{/* Back Arrow */}
-			<ArrowLeft className="hidden md:block w-8 h-8 text-black left-[-46px] top-8 absolute cursor-pointer" />
-		</div>
-	);
+          {/* Location */}
+          <div className="flex flex-col gap-2">
+            <p className="font-bold text-md">Location</p>
+            <div className="flex gap-2">
+              <Navigation className="w-5 h-5 text-gray-600" />
+              <div>{eventData.location}</div>
+            </div>
+          </div>
+
+          {/* Event Description */}
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md mt-10">
+            <p className="font-bold text-md text-gray-800 mb-2">
+              Event Description
+            </p>
+            <p className="text-gray-700 text-base leading-relaxed">
+              {eventData.description}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Back Arrow */}
+      <ArrowLeft
+        onClick={() => navigate(-1)}
+        className="hidden md:block w-8 h-8 text-black left-[-46px] top-8 absolute cursor-pointer"
+      />
+    </div>
+  );
 };
 
 export default EventDetails;

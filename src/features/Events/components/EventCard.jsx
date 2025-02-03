@@ -1,9 +1,21 @@
 import PropTypes from "prop-types";
 import { Ticket } from "lucide-react";
 
-const EventCard = ({ image, title, date, location, isPriced, price, time }) => {
+const EventCard = ({
+  image,
+  title,
+  date,
+  location,
+  isPriced,
+  price,
+  time,
+  onClick = () => {},
+}) => {
   return (
-    <div className="bg-gray-50 shadow-lg rounded-lg">
+    <div
+      className="bg-gray-50 shadow-lg rounded-lg cursor-pointer"
+      onClick={onClick}
+    >
       <img className="rounded-t-lg w-full h-32" src={image} alt={title} />
       <div className="p-4">
         <p className="text-gray-800 font-semibold">{title}</p>

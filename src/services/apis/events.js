@@ -1,6 +1,5 @@
 import { api } from "../api"; // Importing Axios instance
 
-// Login API Call
 export const getEvents = async () => {
   try {
     const response = await api.get("/events");
@@ -10,6 +9,22 @@ export const getEvents = async () => {
     return response?.data || [];
   } catch (error) {
     throw new Error("Error while Calling events API");
+  }
+};
+
+// Get Event Detail API Call
+export const getEventDetail = async (eventId) => {
+  try {
+    if (!eventId) throw new Error("Event ID is required");
+
+    const response = await api.get(`/events/${eventId}`);
+
+    console.log({ response });
+
+    return response?.data || {};
+  } catch (error) {
+    console.error("Error while calling events API:", error);
+    throw new Error("Error while calling events API");
   }
 };
 

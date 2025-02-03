@@ -39,6 +39,12 @@ const HomePage = () => {
     navigate("/create-event");
   };
 
+  const navigateToEventDetailsPage = (event) => {
+    console.log("navigate to event clicked");
+
+    navigate(`/events/${event.id}`);
+  };
+
   const applyTextSearchFilter = (event) => {
     console.log(event.target.value);
 
@@ -176,6 +182,7 @@ const HomePage = () => {
                   isPriced={event?.isPaid == 1 ? true : false}
                   time="12 PM"
                   price={event.isPaid ? event?.price : 0}
+                  onClick={() => navigateToEventDetailsPage(event)}
                 ></EventCard>
               ))}
             </div>
