@@ -13,6 +13,10 @@ import { getEvents } from "../services/apis/events";
 const HomePage = () => {
   const [events, setEvents] = useState([]);
 
+  const [filteredEvents, setFilteredEvents] = useState([]);
+
+  const [searchText, setSearchText] = useState("");
+
   const navigate = useNavigate();
 
   const { showToast } = useToaster();
@@ -24,6 +28,8 @@ const HomePage = () => {
       const eventsData = await getEvents();
 
       setEvents(eventsData); // Set events data
+
+      setFilteredEvents(eventsData);
     } catch (error) {
       showToast(error.message || "Failed to load events", "error"); // Show error toast
     }
@@ -34,6 +40,24 @@ const HomePage = () => {
   };
 
   const applyFilter = () => {};
+
+  const applyTextSearchFilter = (event) => {
+    console.log(event.target.value);
+
+    setSearchText(event.target.value);
+
+    let tempFilteredEvents = events.filter((ev) =>
+      ev?.title?.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+
+    setFilteredEvents(tempFilteredEvents);
+  };
+
+  const clearTextSearchFilter = () => {
+    setFilteredEvents(events);
+
+    setSearchText("");
+  };
 
   useEffect(() => {
     fetchEvents();
@@ -66,7 +90,11 @@ const HomePage = () => {
 
           {/* Search Input */}
           <div className="relative w-full md:w-1/2 mt-5 z-10">
-            <SearchInput />
+            <SearchInput
+              value={searchText}
+              setValue={applyTextSearchFilter}
+              clearValue={clearTextSearchFilter}
+            />
           </div>
         </div>
 
@@ -92,7 +120,7 @@ const HomePage = () => {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {events.map((event, index) => (
+              {filteredEvents.map((event, index) => (
                 <EventCard
                   key={index}
                   className="flex flex-col items-center text-center space-y-3"
