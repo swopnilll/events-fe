@@ -128,7 +128,7 @@ const EventCreation = () => {
   };
 
   return (
-    <div>
+    <div className="pb-12">
       {/* <ArrowLeft className="hidden md:block w-8 h-8 text-black cursor-pointer left-0 top-8" /> */}
       <div className="p-4 w-full pt-10 md:max-w-[1920px] md:w-[90%] md:mx-auto relative">
         <p className="text-3xl font-bold mb-8 text-center">Create New Event</p>

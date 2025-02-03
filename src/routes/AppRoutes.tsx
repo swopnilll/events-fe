@@ -20,8 +20,22 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />
-            <Route path="/events" element={<EventList />} />
-            <Route path="/events/:id" element={<EventDetails />} />
+            <Route
+              path="/events"
+              element={
+                <ProtectedRoute>
+                  <EventList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/events/:id"
+              element={
+                <ProtectedRoute>
+                  <EventDetails />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/create-event"
               element={

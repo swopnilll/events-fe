@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import SearchInput from "../components/SearchInput";
 import Filter from "../components/Filter";
 import EventCard from "../components/EventCard";
@@ -22,6 +24,8 @@ const EventList = () => {
 
   const { showToast } = useToaster();
   const { showLoader, hideLoader } = useLoader();
+
+  const navigate = useNavigate();
 
   const fallbackImageUrl = "/images/events/event1.svg";
 
@@ -68,6 +72,12 @@ const EventList = () => {
       ...prevFilters,
       [filterBy.toLowerCase()]: optionName,
     }));
+  };
+
+  const navigateToEventDetailsPage = (event) => {
+    console.log("navigate to event clicked");
+
+    navigate(`/events/${event.id}`);
   };
 
   useEffect(() => {
@@ -140,9 +150,10 @@ const EventList = () => {
                 title={event?.title}
                 date={formatDate(event?.start_date)}
                 location={event?.location}
-                isPriced={event?.isPaid == 1 ? `Paid` : `Free`}
+                isPriced={event?.isPaid == 1 ? true : false}
                 time="12 PM"
-                price={event?.price}
+                price={event.isPaid ? event?.price : 0}
+                onClick={() => navigateToEventDetailsPage(event)}
               ></EventCard>
             ))}
           </div>
