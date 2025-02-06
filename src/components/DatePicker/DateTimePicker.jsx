@@ -26,6 +26,7 @@ const DateTimePicker = ({
         {label}
       </label>
       <DatePicker
+        minDate={new Date()}
         selected={value}
         onChange={handleDateChange}
         placeholderText={placeholder}
