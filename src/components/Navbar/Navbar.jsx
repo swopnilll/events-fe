@@ -1,10 +1,9 @@
-import { useState, useContext } from "react";
+import { useState, React } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useViewportSize } from "@mantine/hooks";
 import { MenuIcon, XIcon, User } from "lucide-react";
 
-import "./NavBar.css";
 import Logo from "../logo/Logo";
 import cn from "../../lib/utils";
 import { navLinks } from "../../config/ui/uiConfig";
@@ -57,7 +56,7 @@ const Navbar = () => {
         showToast("Logout failed", "error");
       }
     } catch (error) {
-      showToast("Something went wrong", "error");
+      showToast("Something went wrong", error?.state || "Error");
     } finally {
       hideLoader();
     }
@@ -91,7 +90,7 @@ const Navbar = () => {
                 "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-200 p-8 h-full overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-0",
               !isMenuOpen &&
                 isMobile &&
-                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-200 p-8 h-full overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-full"
+                "bg-neutral-700 flex-col fixed top-[--navbar-height] right-0 w-200 p-8 h-full overflow-y-auto transform transition-transform duration-300 ease-in-out translate-x-full",
             )}
           >
             {navLinks.map((link) => (
@@ -101,7 +100,7 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     cn(
                       "text-white px-4 py-4 border-b-4 transition-all duration-300",
-                      isActive ? "border-yellow-400" : "border-transparent"
+                      isActive ? "border-yellow-400" : "border-transparent",
                     )
                   }
                   onClick={closeMenuOnMobile}
@@ -117,7 +116,7 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     cn(
                       "text-white px-4 py-4 border-b-4 transition-all duration-300",
-                      isActive ? "border-yellow-400" : "border-transparent"
+                      isActive ? "border-yellow-400" : "border-transparent",
                     )
                   }
                 >
@@ -133,7 +132,7 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     cn(
                       "text-white px-4 py-4 border-b-4 transition-all duration-300",
-                      isActive ? "border-yellow-400" : "border-transparent"
+                      isActive ? "border-yellow-400" : "border-transparent",
                     )
                   }
                 >
