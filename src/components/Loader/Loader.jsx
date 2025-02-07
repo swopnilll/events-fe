@@ -1,4 +1,3 @@
-import React from "react";
 import { useLoader } from "../../contexts/LoaderContext/useLoader";
 
 const Loader = () => {
