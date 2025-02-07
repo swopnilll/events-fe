@@ -16,13 +16,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20 # Ensuring Node.js 20.x is used
+          node-version: 20 # Use Node.js v20.x
+          cache: "yarn" # Cache yarn dependencies for faster builds
 
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
+
+      - name: Set up Environment Variables
+        run: echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
 
       - name: Build Project
         run: yarn build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
       - name: Deploy to S3
         run: aws s3 sync ./dist s3://events-fe --delete
