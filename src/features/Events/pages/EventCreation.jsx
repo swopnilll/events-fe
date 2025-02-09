@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-
-import { ArrowLeft, Calendar, Ticket, Navigation } from "lucide-react";
 
 import DropZone from "../../../components/DropZone";
 import TextBox from "../../../components/TextArea/TextBox";
@@ -11,13 +9,7 @@ import DateTimePicker from "../../../components/DatePicker/DateTimePicker";
 
 import { createEventApi } from "../../../services/apis/events";
 
-import { useLoader } from "../../../contexts/LoaderContext/useLoader";
-import { useToaster } from "../../../contexts/ToasterContext/useToaster";
-
 const EventCreation = () => {
-  const { showToast } = useToaster();
-  const { showLoader, hideLoader } = useLoader();
-
   const [formData, setFormData] = useState({
     title: "",
     category: "1",
@@ -44,7 +36,7 @@ const EventCreation = () => {
         file: "",
       }));
     } else {
-      setError("Invalid file type or no file selected!");
+      console.log("Invalid file type or no file selected!");
     }
   };
 
@@ -113,17 +105,14 @@ const EventCreation = () => {
 
     // API call or further processing logic for event submission
     try {
-      showLoader(); // Show loader
       const response = await createEventApi(formData);
-      showToast("Event created successfully!", "success");
+
       if (response?.sucess) {
-        showToast("Event created successfully!", "success");
+        console.log("Event Created Success");
       }
       navigate("/events"); // Redirect to events page
     } catch (error) {
-      showToast(error.message, "error");
-    } finally {
-      hideLoader(); // Hide loader
+      console.log(error.message, "error");
     }
   };
 
@@ -236,7 +225,7 @@ const EventCreation = () => {
                 />
                 <p className="text-md text-black">Free Event</p>
                 <p className="text-sm text-gray-500">
-                  I'm running a free event
+                  I am running a free event
                 </p>
               </div>
             </div>

@@ -9,8 +9,6 @@ import cn from "../../lib/utils";
 import { navLinks } from "../../config/ui/uiConfig";
 
 import { useAuth } from "../../contexts/AuthContext/useAuth";
-import { useLoader } from "../../contexts/LoaderContext/useLoader";
-import { useToaster } from "../../contexts/ToasterContext/useToaster";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,9 +20,7 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const { showToast } = useToaster(); // const { isAuthenticated } = useAuth();
   const { isAuthenticated, logout, user } = useAuth();
-  const { showLoader, hideLoader } = useLoader();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -46,19 +42,15 @@ const Navbar = () => {
   const handleLogout = async () => {
     console.log("i am calllleddd");
     try {
-      showLoader();
       const response = await logout();
 
       if (response.success) {
-        showToast("Successfully logged Out", "success");
         navigate(-1); // Navigate to homepage
       } else {
-        showToast("Logout failed", "error");
+        console.log("Log out failed");
       }
     } catch (error) {
-      showToast("Something went wrong", error?.state || "Error");
-    } finally {
-      hideLoader();
+      console.log(error);
     }
   };
 

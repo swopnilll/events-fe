@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import SearchInput from "../components/SearchInput";
 import Filter from "../components/Filter";
 import EventCard from "../components/EventCard";
-
-import { useLoader } from "../../../contexts/LoaderContext/useLoader";
-import { useToaster } from "../../../contexts/ToasterContext/useToaster";
 
 import { getEvents } from "../../../services/apis/events";
 
@@ -22,9 +19,6 @@ const EventList = () => {
     date: null, // 'Today', 'Tomorrow', etc.
   });
 
-  const { showToast } = useToaster();
-  const { showLoader, hideLoader } = useLoader();
-
   const navigate = useNavigate();
 
   const fallbackImageUrl = "/images/events/event1.svg";
@@ -32,15 +26,14 @@ const EventList = () => {
   // Fetch events from the API
   const fetchEvents = async () => {
     try {
-      showLoader(); // Show loader
       const eventsData = await getEvents();
 
       setEvents(eventsData); // Set events data
       setFilteredEvents(eventsData);
     } catch (error) {
-      showToast(error.message || "Failed to load events", "error"); // Show error toast
+      console.log(error.message || "Failed to load events", "error"); // Show error toast
     } finally {
-      hideLoader(); // Hide loader
+      console.log("");
     }
   };
 
@@ -52,14 +45,14 @@ const EventList = () => {
     if (searchQuery) {
       console.log("i am here");
       filtered = filtered.filter((event) =>
-        event.title.toLowerCase().includes(searchQuery.toLowerCase())
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
     // Apply price filter
     if (filters.price) {
       filtered = filtered.filter((event) =>
-        filters.price === "Free" ? event.is_paid === 0 : event.is_paid === 1
+        filters.price === "Free" ? event.is_paid === 0 : event.is_paid === 1,
       );
     }
 
@@ -93,7 +86,7 @@ const EventList = () => {
     console.log(
       `${
         e.target.checked ? "Applied" : "Removed"
-      }: ${optionName} in ${filterBy}`
+      }: ${optionName} in ${filterBy}`,
     );
   };
 
@@ -118,11 +111,11 @@ const EventList = () => {
             options={[
               {
                 name: "Free",
-                handler: (e) => handleFilterChange("price", "Free"),
+                handler: () => handleFilterChange("price", "Free"),
               },
               {
                 name: "Paid",
-                handler: (e) => handleFilterChange("price", "Paid"),
+                handler: () => handleFilterChange("price", "Paid"),
               },
             ]}
           />

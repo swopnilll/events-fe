@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { useToaster } from "../contexts/ToasterContext/useToaster";
 
 import Filter from "../features/Events/components/Filter";
 import EventCard from "../features/Events/components/EventCard";
@@ -23,8 +21,6 @@ const HomePage = () => {
 
   const navigate = useNavigate();
 
-  const { showToast } = useToaster();
-
   const fallbackImageUrl = "/images/events/event1.svg";
 
   const navigateToCreateEvent = () => {
@@ -43,7 +39,7 @@ const HomePage = () => {
     setSearchText(event.target.value);
 
     let tempFilteredEvents = events.filter((ev) =>
-      ev?.title?.toLowerCase().includes(event.target.value.toLowerCase())
+      ev?.title?.toLowerCase().includes(event.target.value.toLowerCase()),
     );
 
     setFilteredEvents(tempFilteredEvents);
@@ -71,7 +67,7 @@ const HomePage = () => {
         case "Today":
           tempFilteredEvents = tempFilteredEvents.filter(
             (ev) =>
-              new Date(ev.start_date).toDateString() === today.toDateString()
+              new Date(ev.start_date).toDateString() === today.toDateString(),
           );
           break;
 
@@ -79,14 +75,15 @@ const HomePage = () => {
           tomorrow.setDate(today.getDate() + 1);
           tempFilteredEvents = tempFilteredEvents.filter(
             (ev) =>
-              new Date(ev.start_date).toDateString() === tomorrow.toDateString()
+              new Date(ev.start_date).toDateString() ===
+              tomorrow.toDateString(),
           );
           break;
 
         // TODO: Fix this
         case "This Weekend":
           tempFilteredEvents = tempFilteredEvents.filter((ev) =>
-            weekendDays.includes(new Date(ev.start_date).getDay())
+            weekendDays.includes(new Date(ev.start_date).getDay()),
           );
           break;
 
@@ -111,14 +108,14 @@ const HomePage = () => {
 
         setFilteredEvents(eventsData);
       } catch (error) {
-        showToast(error.message || "Failed to load events", "error"); // Show error toast
+        console.log(error.message || "Failed to load events", "error"); // Show error toast
       }
     };
 
     if (isAuthenticated) {
       fetchEvents();
     }
-  }, [isAuthenticated, showToast]);
+  }, [isAuthenticated]);
 
   return (
     <>

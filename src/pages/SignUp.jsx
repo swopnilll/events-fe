@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 
 import { useNavigate } from "react-router-dom";
 
@@ -10,10 +9,8 @@ import InputField from "../components/InputField/InputField";
 import Logo from "../components/logo/Logo";
 
 import { useAuth } from "../contexts/AuthContext/useAuth";
-import { useLoader } from "../contexts/LoaderContext/useLoader";
-import { useToaster } from "../contexts/ToasterContext/useToaster";
 
-const SignUp = ({}) => {
+const SignUp = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -21,7 +18,6 @@ const SignUp = ({}) => {
   });
 
   const [errors, setErrors] = useState({});
-  const [apiError, setApiError] = useState("");
 
   const navigate = useNavigate();
 
@@ -34,8 +30,6 @@ const SignUp = ({}) => {
   };
 
   const { register } = useAuth();
-  const { showLoader, hideLoader } = useLoader();
-  const { showToast } = useToaster();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -86,20 +80,17 @@ const SignUp = ({}) => {
     }
 
     try {
-      showLoader();
       const response = await register(formData); // Call register from context
       if (response.success) {
-        showToast("Successfully registered", "success");
+        console.log("Successfully registered", "success");
         navigate("/"); // Navigate to homepage
       } else {
-        setApiError(response.error); // Show API error
-        showToast("Registration failed", "error");
+        console.log(response.error); // Show API error
+        console.log("Registration failed", "error");
       }
     } catch (error) {
-      setApiError("Something went wrong. Please try again.");
-      showToast("Something went wrong", "error");
-    } finally {
-      hideLoader();
+      console.log("Something went wrong. Please try again.");
+      console.log("Something went wrong", error);
     }
   };
 

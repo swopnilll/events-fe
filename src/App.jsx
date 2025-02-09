@@ -1,23 +1,20 @@
+import React from "react";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import AppRoutes from "./routes/AppRoutes";
 
 import GlobalProvider from "./contexts/GlobalProvider";
-import { LoaderProvider } from "./contexts/LoaderContext/LoaderProvider";
-import { ToasterProvider } from "./contexts/ToasterContext/ToasterProvider";
 
-import Loader from "./components/Loader/Loader";
-import Toaster from "./components/Toaster/Toaster";
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <LoaderProvider>
-      <ToasterProvider>
-        <GlobalProvider>
-          <Loader />
-          <Toaster />
-          <AppRoutes />
-        </GlobalProvider>
-      </ToasterProvider>
-    </LoaderProvider>
+    <QueryClientProvider client={queryClient}>
+      <GlobalProvider>
+        <AppRoutes />
+      </GlobalProvider>
+    </QueryClientProvider>
   );
 }
 

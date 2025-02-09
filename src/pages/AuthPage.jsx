@@ -1,10 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../contexts/AuthContext/useAuth"; // Import the useAuth hook
-
-import { useLoader } from "../contexts/LoaderContext/useLoader";
-import { useToaster } from "../contexts/ToasterContext/useToaster";
 
 import { XIcon } from "lucide-react";
 
@@ -19,9 +16,7 @@ const AuthPage = () => {
 
   const [errors, setErrors] = useState({});
 
-  const { showToast } = useToaster();
   const { loading, login, error } = useAuth();
-  const { showLoader, hideLoader } = useLoader();
 
   const navigate = useNavigate();
 
@@ -76,19 +71,15 @@ const AuthPage = () => {
     }
 
     try {
-      showLoader();
       const response = await login(formData.email, formData.password);
 
       if (response?.success) {
-        showToast("Login Successfull", "success");
         navigate("/");
       } else {
-        showToast("Login failed", "error");
+        console.log("Login failed", "error");
       }
     } catch (error) {
       console.error("Login failed:", error);
-    } finally {
-      hideLoader();
     }
 
     setErrors({});
